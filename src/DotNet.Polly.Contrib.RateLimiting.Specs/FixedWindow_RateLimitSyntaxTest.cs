@@ -1,17 +1,17 @@
 using System.Threading.RateLimiting;
 using Polly.RateLimit;
 using FluentAssertions;
+using Polly;
 
-namespace Polly.Contrib.RateLimiting.Tests;
+namespace DotNet.Polly.Contrib.RateLimiting.Tests;
 
-public class SlidingWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
+public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
 {
-
     [Fact]
     public override void Should_throw_when_option_is_null()
     {
         // Arrange
-        var invalidSyntax = () => RateLimit.SlidingWindowRateLimit(options: null!);
+        var invalidSyntax = () => RateLimit.FixedWindowRateLimit(options: null!);
 
         // Act and Assert
         invalidSyntax.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("options");
@@ -21,7 +21,7 @@ public class SlidingWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Should_throw_when_configure_option_is_null()
     {
         // Arrange
-        var invalidSyntax = () => RateLimit.SlidingWindowRateLimit(configureOptions: null!);
+        var invalidSyntax = () => RateLimit.FixedWindowRateLimit(configureOptions: null!);
 
         // Act and Assert
         invalidSyntax.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("configureOptions");
@@ -31,10 +31,9 @@ public class SlidingWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Given_limiter_with_one_permit_should_acquire_lease()
     {
         // Arrange
-        var rateLimiter = RateLimit.SlidingWindowRateLimit(new SlidingWindowRateLimiterOptions
+        var rateLimiter = RateLimit.FixedWindowRateLimit(new FixedWindowRateLimiterOptions
         {
             PermitLimit = 1,
-            SegmentsPerWindow = 1,
             AutoReplenishment = false,
             Window = TimeSpan.FromSeconds(2)
         });
@@ -50,10 +49,9 @@ public class SlidingWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Given_limiter_with_one_permit_throw_rate_limit_exception_for_second_request()
     {
         // Arrange
-        var rateLimiter = RateLimit.SlidingWindowRateLimit(new SlidingWindowRateLimiterOptions
+        var rateLimiter = RateLimit.FixedWindowRateLimit(new FixedWindowRateLimiterOptions
         {
             PermitLimit = 1,
-            SegmentsPerWindow = 1,
             AutoReplenishment = false,
             Window = TimeSpan.FromSeconds(2)
         });
@@ -74,10 +72,9 @@ public class SlidingWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Given_limiter_with_N_permit_throw_rate_limit_exception_for_N_plus_1_th_request(int permitLimit)
     {
         // Arrange
-        var rateLimiter = RateLimit.SlidingWindowRateLimit(new SlidingWindowRateLimiterOptions
+        var rateLimiter = RateLimit.FixedWindowRateLimit(new FixedWindowRateLimiterOptions
         {
             PermitLimit = permitLimit,
-            SegmentsPerWindow = 1,
             AutoReplenishment = false,
             Window = TimeSpan.FromSeconds(2)
         });
@@ -103,11 +100,10 @@ public class SlidingWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     {
         // Arrange
         ReplenishingRateLimiter rateLimiter = null!;
-        var rateLimiterPolicy = RateLimit.SlidingWindowRateLimit(
+        var rateLimiterPolicy = RateLimit.FixedWindowRateLimit(
             option =>
             {
                 option.PermitLimit = permitLimit;
-                option.SegmentsPerWindow = 1;
                 option.QueueLimit = 0;
                 option.AutoReplenishment = false;
                 option.Window = TimeSpan.FromMilliseconds(1);
@@ -142,6 +138,7 @@ public class SlidingWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
         // Assert
         nextResults.Should().AllBeEquivalentTo(true);
     }
+
     [Theory]
     [InlineData(2)]
     [InlineData(5)]
@@ -149,11 +146,10 @@ public class SlidingWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Given_immediate_parallel_contention_limiter_still_only_permits_one(int parallelContention)
     {
         // Arrange
-        var rateLimiterPolicy = RateLimit.SlidingWindowRateLimit(
+        var rateLimiterPolicy = RateLimit.FixedWindowRateLimit(
             option =>
             {
                 option.PermitLimit = 1;
-                option.SegmentsPerWindow = 1;
                 option.QueueLimit = 0;
                 option.AutoReplenishment = false;
                 option.Window = TimeSpan.FromMilliseconds(1);

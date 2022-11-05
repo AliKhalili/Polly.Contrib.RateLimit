@@ -1,17 +1,16 @@
 using System.Threading.RateLimiting;
 using Polly.RateLimit;
 using FluentAssertions;
-using Polly;
 
-namespace Polly.Contrib.RateLimiting.Tests;
+namespace DotNet.Polly.Contrib.RateLimiting.Tests;
 
-public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
+public class TokenBucket_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
 {
     [Fact]
     public override void Should_throw_when_option_is_null()
     {
         // Arrange
-        var invalidSyntax = () => RateLimit.FixedWindowRateLimit(options: null!);
+        var invalidSyntax = () => RateLimit.TokenBucketRateLimit(options: null!);
 
         // Act and Assert
         invalidSyntax.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("options");
@@ -21,7 +20,7 @@ public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Should_throw_when_configure_option_is_null()
     {
         // Arrange
-        var invalidSyntax = () => RateLimit.FixedWindowRateLimit(configureOptions: null!);
+        var invalidSyntax = () => RateLimit.TokenBucketRateLimit(configureOptions: null!);
 
         // Act and Assert
         invalidSyntax.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("configureOptions");
@@ -31,11 +30,12 @@ public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Given_limiter_with_one_permit_should_acquire_lease()
     {
         // Arrange
-        var rateLimiter = RateLimit.FixedWindowRateLimit(new FixedWindowRateLimiterOptions
+        var rateLimiter = RateLimit.TokenBucketRateLimit(new TokenBucketRateLimiterOptions
         {
-            PermitLimit = 1,
+            TokenLimit = 1,
+            TokensPerPeriod = 1,
             AutoReplenishment = false,
-            Window = TimeSpan.FromSeconds(2)
+            ReplenishmentPeriod = TimeSpan.FromSeconds(2)
         });
 
         // Act
@@ -49,11 +49,12 @@ public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Given_limiter_with_one_permit_throw_rate_limit_exception_for_second_request()
     {
         // Arrange
-        var rateLimiter = RateLimit.FixedWindowRateLimit(new FixedWindowRateLimiterOptions
+        var rateLimiter = RateLimit.TokenBucketRateLimit(new TokenBucketRateLimiterOptions
         {
-            PermitLimit = 1,
+            TokenLimit = 1,
+            TokensPerPeriod = 1,
             AutoReplenishment = false,
-            Window = TimeSpan.FromSeconds(2)
+            ReplenishmentPeriod = TimeSpan.FromSeconds(2)
         });
 
         // Act
@@ -72,11 +73,12 @@ public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Given_limiter_with_N_permit_throw_rate_limit_exception_for_N_plus_1_th_request(int permitLimit)
     {
         // Arrange
-        var rateLimiter = RateLimit.FixedWindowRateLimit(new FixedWindowRateLimiterOptions
+        var rateLimiter = RateLimit.TokenBucketRateLimit(new TokenBucketRateLimiterOptions
         {
-            PermitLimit = permitLimit,
+            TokenLimit = permitLimit,
+            TokensPerPeriod = permitLimit,
             AutoReplenishment = false,
-            Window = TimeSpan.FromSeconds(2)
+            ReplenishmentPeriod = TimeSpan.FromSeconds(1)
         });
 
         // Act
@@ -100,13 +102,14 @@ public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     {
         // Arrange
         ReplenishingRateLimiter rateLimiter = null!;
-        var rateLimiterPolicy = RateLimit.FixedWindowRateLimit(
+        var rateLimiterPolicy = RateLimit.TokenBucketRateLimit(
             option =>
             {
-                option.PermitLimit = permitLimit;
+                option.TokenLimit = permitLimit;
+                option.TokensPerPeriod = permitLimit;
                 option.QueueLimit = 0;
                 option.AutoReplenishment = false;
-                option.Window = TimeSpan.FromMilliseconds(1);
+                option.ReplenishmentPeriod = TimeSpan.FromMilliseconds(1);
             },
             limiter =>
             {
@@ -138,7 +141,6 @@ public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
         // Assert
         nextResults.Should().AllBeEquivalentTo(true);
     }
-
     [Theory]
     [InlineData(2)]
     [InlineData(5)]
@@ -146,13 +148,14 @@ public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
     public override void Given_immediate_parallel_contention_limiter_still_only_permits_one(int parallelContention)
     {
         // Arrange
-        var rateLimiterPolicy = RateLimit.FixedWindowRateLimit(
+        var rateLimiterPolicy = RateLimit.TokenBucketRateLimit(
             option =>
             {
-                option.PermitLimit = 1;
+                option.TokenLimit = 1;
+                option.TokensPerPeriod = 1;
                 option.QueueLimit = 0;
                 option.AutoReplenishment = false;
-                option.Window = TimeSpan.FromMilliseconds(1);
+                option.ReplenishmentPeriod = TimeSpan.FromMilliseconds(1);
             });
 
         // Act

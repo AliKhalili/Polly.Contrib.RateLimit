@@ -2,31 +2,30 @@
 using Polly;
 using Polly.RateLimit;
 
-namespace Polly.Contrib.RateLimiting;
-
-internal static class RateLimitEngine
+namespace DotNet.Polly.Contrib.RateLimiting;
+internal static class AsyncRateLimitEngine
 {
-    internal static TResult Implementation<TResult>(
+    internal static async Task<TResult> ImplementationAsync<TResult>(
         RateLimiter rateLimiter,
         Func<RateLimitLease, Context, TResult> retryAfterFactory,
-        Func<Context, CancellationToken, TResult> action,
+        Func<Context, CancellationToken, Task<TResult>> action,
         Context context,
-        CancellationToken cancellationToken
-    )
+        CancellationToken cancellationToken,
+        bool continueOnCapturedContext
+        )
     {
-        var lease = rateLimiter.AttemptAcquire(1);
+        var lease = await rateLimiter.AcquireAsync(1, cancellationToken);
 
         if (lease.IsAcquired)
         {
-            return action(context, cancellationToken);
+            return await action(context, cancellationToken).ConfigureAwait(continueOnCapturedContext);
         }
-
 
         if (retryAfterFactory != null)
         {
             return retryAfterFactory(lease, context);
         }
-
+        
         lease.TryGetMetadata(MetadataName.RetryAfter, out var retryAfter);
         throw new RateLimitRejectedException(retryAfter);
     }

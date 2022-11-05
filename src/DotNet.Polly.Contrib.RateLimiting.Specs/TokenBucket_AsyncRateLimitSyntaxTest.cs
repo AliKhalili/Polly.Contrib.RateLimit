@@ -2,15 +2,15 @@ using System.Threading.RateLimiting;
 using Polly.RateLimit;
 using FluentAssertions;
 
-namespace Polly.Contrib.RateLimiting.Tests;
+namespace DotNet.Polly.Contrib.RateLimiting.Tests;
 
-public class FixedWindow_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
+public class TokenBucket_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
 {
     [Fact]
     public override void Should_throw_when_option_is_null()
     {
         // Arrange
-        var invalidSyntax = () => RateLimit.FixedWindowRateLimitAsync(options: null!);
+        var invalidSyntax = () => RateLimit.TokenBucketRateLimitAsync(options: null!);
 
         // Act and Assert
         invalidSyntax.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("options");
@@ -20,7 +20,7 @@ public class FixedWindow_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
     public override void Should_throw_when_configure_option_is_null()
     {
         // Arrange
-        var invalidSyntax = () => RateLimit.FixedWindowRateLimitAsync(configureOptions: null!);
+        var invalidSyntax = () => RateLimit.TokenBucketRateLimitAsync(configureOptions: null!);
 
         // Act and Assert
         invalidSyntax.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("configureOptions");
@@ -30,11 +30,12 @@ public class FixedWindow_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
     public override async void Given_limiter_with_one_permit_should_acquire_lease()
     {
         // Arrange
-        var rateLimiter = RateLimit.FixedWindowRateLimitAsync(new FixedWindowRateLimiterOptions
+        var rateLimiter = RateLimit.TokenBucketRateLimitAsync(new TokenBucketRateLimiterOptions
         {
-            PermitLimit = 1,
+            TokenLimit = 1,
+            TokensPerPeriod = 1,
             AutoReplenishment = false,
-            Window = TimeSpan.FromSeconds(2)
+            ReplenishmentPeriod = TimeSpan.FromSeconds(2)
         });
 
         // Act
@@ -48,12 +49,13 @@ public class FixedWindow_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
     public override async void Given_limiter_with_one_permit_throw_rate_limit_exception_for_second_request()
     {
         // Arrange
-        var rateLimiter = RateLimit.FixedWindowRateLimitAsync(
+        var rateLimiter = RateLimit.TokenBucketRateLimitAsync(
             option =>
         {
-            option.PermitLimit = 1;
+            option.TokenLimit = 1;
+            option.TokensPerPeriod = 1;
             option.AutoReplenishment = false;
-            option.Window = TimeSpan.FromSeconds(2);
+            option.ReplenishmentPeriod = TimeSpan.FromSeconds(2);
         });
 
         // Act
@@ -72,12 +74,13 @@ public class FixedWindow_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
     public override async void Given_limiter_with_N_permit_throw_rate_limit_exception_for_N_plus_1_th_request(int permitLimit)
     {
         // Arrange
-        var rateLimiter = RateLimit.FixedWindowRateLimitAsync(
+        var rateLimiter = RateLimit.TokenBucketRateLimitAsync(
             option =>
         {
-            option.PermitLimit = permitLimit;
+            option.TokenLimit = permitLimit;
+            option.TokensPerPeriod = 1;
             option.AutoReplenishment = false;
-            option.Window = TimeSpan.FromSeconds(2);
+            option.ReplenishmentPeriod = TimeSpan.FromSeconds(2);
         });
 
         // Act
@@ -101,13 +104,14 @@ public class FixedWindow_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
     {
         // Arrange
         ReplenishingRateLimiter rateLimiter = null!;
-        var rateLimiterPolicy = RateLimit.FixedWindowRateLimitAsync(
+        var rateLimiterPolicy = RateLimit.TokenBucketRateLimitAsync(
             option =>
             {
-                option.PermitLimit = permitLimit;
+                option.TokenLimit = permitLimit;
+                option.TokensPerPeriod = permitLimit;
                 option.QueueLimit = 0;
                 option.AutoReplenishment = false;
-                option.Window = TimeSpan.FromMilliseconds(1);
+                option.ReplenishmentPeriod = TimeSpan.FromMilliseconds(1);
             },
             limiter =>
             {
@@ -147,13 +151,14 @@ public class FixedWindow_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
     public async override void Given_immediate_parallel_contention_limiter_still_only_permits_one(int parallelContention)
     {
         // Arrange
-        var rateLimiterPolicy = RateLimit.FixedWindowRateLimitAsync(
+        var rateLimiterPolicy = RateLimit.TokenBucketRateLimitAsync(
             option =>
             {
-                option.PermitLimit = 1;
+                option.TokenLimit = 1;
+                option.TokensPerPeriod = 1;
                 option.QueueLimit = 0;
                 option.AutoReplenishment = false;
-                option.Window = TimeSpan.FromMilliseconds(1);
+                option.ReplenishmentPeriod = TimeSpan.FromMilliseconds(1);
             });
 
         // Act
@@ -183,18 +188,20 @@ public class FixedWindow_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
         results.Count(x => x).Should().Be(1);
         results.Count(x => !x).Should().Be(parallelContention - 1);
     }
+
     [Fact]
     public override async void Given_limiter_with_one_permit_and_one_queue_should_acquire_queued_and_throw_for_3_request()
     {
         // Arrange
         ReplenishingRateLimiter rateLimiter = null!;
-        var rateLimiterPolicy = RateLimit.FixedWindowRateLimitAsync(
+        var rateLimiterPolicy = RateLimit.TokenBucketRateLimitAsync(
                     option =>
                     {
-                        option.PermitLimit = 1;
+                        option.TokenLimit = 1;
+                        option.TokensPerPeriod = 1;
                         option.QueueLimit = 1;
                         option.AutoReplenishment = false;
-                        option.Window = TimeSpan.FromMilliseconds(1);
+                        option.ReplenishmentPeriod = TimeSpan.FromMilliseconds(1);
                     },
                     limiter =>
                     {

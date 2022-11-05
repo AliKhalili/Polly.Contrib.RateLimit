@@ -1,4 +1,4 @@
-namespace Polly.Contrib.RateLimiting.Tests;
+namespace DotNet.Polly.Contrib.RateLimiting.Tests;
 
 public abstract class RateLimitSyntaxBaseTest
 {

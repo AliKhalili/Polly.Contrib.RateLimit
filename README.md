@@ -1,4 +1,4 @@
-# Polly.Contrib.RateLimiting
+# DotNet.Polly.Contrib.RateLimiting
 
 ## Introduction
 
@@ -6,14 +6,14 @@ Rate limiting is the concept of controlling the rate of traffic sent by a client
 
 [Polly](https://github.com/App-vNext/Polly) is a fantastic .NET library, which provides several resiliency design patterns. Developers can build different policies, such as Rate-limiting in a fluent and thread safe manager.
 
-.Net team also announced built-in Rate Limiting support as part of .NET 7 with the nuget package [System.Threading.RateLimiting](https://www.nuget.org/packages/Polly.Contrib.RateLimiting/). This package provides a few commonly used algorithms built-in with queuing strategy.
+.Net team also announced built-in Rate Limiting support as part of .NET 7 with the nuget package [System.Threading.RateLimiting](https://www.nuget.org/packages/DotNet.Polly.Contrib.RateLimiting/). This package provides a few commonly used algorithms built-in with queuing strategy.
 
 This repository is a tiny wrapper around .NET 7 Rate Limiting package that enables developers to define flexible Polly Rate limiting policies.
 
 ## Installing via .NET CLI
 
 ```shell
-dotnet add package Polly.Contrib.RateLimiting --prerelease
+dotnet add package DotNet.Polly.Contrib.RateLimiting --prerelease
 ```
 
 ## Defining Polly Policies
