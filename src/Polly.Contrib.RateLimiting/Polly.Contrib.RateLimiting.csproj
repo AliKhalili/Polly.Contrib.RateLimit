@@ -7,13 +7,13 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>.NET 7 Polly Rate Limit</Title>
     <Version>1.0</Version>
-    <PackageProjectUrl>https://github.com/AliKhalili/Polly.Contrib.RateLimit</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/AliKhalili/Polly.Contrib.RateLimiting</PackageProjectUrl>
     <Authors>Ali Khalili</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <RepositoryUrl>https://github.com/AliKhalili/Polly.Contrib.RateLimit</RepositoryUrl>
+    <RepositoryUrl>https://github.com/AliKhalili/Polly.Contrib.RateLimiting</RepositoryUrl>
     <PackageTags>Polly;Rate-limit;Throttle;Resilience;Policy;</PackageTags>
     <PackageIcon>rate-limiting.png</PackageIcon>
-    <PackageReleaseNotes>See https://github.com/AliKhalili/Polly.Contrib.RateLimit/blob/main/CHANGELOG.md for details</PackageReleaseNotes>
+    <PackageReleaseNotes>See https://github.com/AliKhalili/Polly.Contrib.RateLimiting/blob/main/CHANGELOG.md for details</PackageReleaseNotes>
     <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
   </PropertyGroup>
 

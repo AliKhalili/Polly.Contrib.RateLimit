@@ -1,4 +1,4 @@
-# Polly.Contrib.RateLimit changelog
+# Polly.Contrib.RateLimiting changelog
 
 ## 0.1.0
 - First version

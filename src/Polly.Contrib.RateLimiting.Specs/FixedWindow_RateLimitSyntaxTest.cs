@@ -3,7 +3,7 @@ using Polly.RateLimit;
 using FluentAssertions;
 using Polly;
 
-namespace Polly.Contrib.RateLimit.Tests;
+namespace Polly.Contrib.RateLimiting.Tests;
 
 public class FixedWindow_RateLimitSyntaxTest : RateLimitSyntaxBaseTest
 {

@@ -2,7 +2,7 @@
 using Polly;
 using Polly.RateLimit;
 
-namespace Polly.Contrib.RateLimit;
+namespace Polly.Contrib.RateLimiting;
 
 internal static class RateLimitEngine
 {

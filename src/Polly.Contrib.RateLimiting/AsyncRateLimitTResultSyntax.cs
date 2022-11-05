@@ -1,13 +1,12 @@
 ﻿using System.Threading.RateLimiting;
 using Polly;
-using Polly.RateLimit;
 
-namespace Polly.Contrib.RateLimit;
+namespace Polly.Contrib.RateLimiting;
 
 public abstract partial class RateLimit
 {
     /// <summary>
-    /// Build a RateLimit <see cref="Policy"/> that will rate-limit executions based on the <see cref="FixedWindowRateLimiter" /> rate limiter.
+    /// Build a RateLimit <see cref="AsyncPolicy"/> that will rate-limit executions based on the <see cref="FixedWindowRateLimiter" /> rate limiter.
     /// </summary>
     /// <typeparam name="TResult">The type of return values this policy will handle.</typeparam>
     /// <param name="configureOptions">A delegate that is used to configure an <see cref="FixedWindowRateLimiterOptions"/>.</param>
@@ -15,20 +14,20 @@ public abstract partial class RateLimit
     /// <param name="retryAfterFactory">An (optional) factory to use to express retry-after back to the caller, when an operation is rate-limited.
     /// <remarks>If null, a <see cref="RateLimitRejectedException"/> with property <see cref="RateLimitRejectedException.RetryAfter"/> will be thrown to indicate rate-limiting.</remarks></param>
     /// <returns></returns>
-    public static RateLimitPolicy<TResult> FixedWindowRateLimit<TResult>(
+    public static AsyncRateLimitPolicy<TResult> FixedWindowRateLimitAsync<TResult>(
         Action<FixedWindowRateLimiterOptions> configureOptions,
-        Action<ReplenishingRateLimiter> limiterStateAction = null!,
+        Action<RateLimiter> limiterStateAction = null!,
         Func<RateLimitLease, Context, TResult> retryAfterFactory = null!)
     {
         ArgumentNullException.ThrowIfNull(configureOptions);
         var options = new FixedWindowRateLimiterOptions();
         configureOptions(options);
 
-        return FixedWindowRateLimit<TResult>(options, limiterStateAction, retryAfterFactory);
+        return FixedWindowRateLimitAsync<TResult>(options, limiterStateAction, retryAfterFactory);
     }
 
     /// <summary>
-    /// Build a RateLimit <see cref="Policy"/> that will rate-limit executions based on the <see cref="FixedWindowRateLimiter" /> rate limiter.
+    /// Build a RateLimit <see cref="AsyncPolicy"/> that will rate-limit executions based on the <see cref="FixedWindowRateLimiter" /> rate limiter.
     /// </summary>
     /// <typeparam name="TResult">The type of return values this policy will handle.</typeparam>
     /// <param name="options">Options to specify the behavior of the <see cref="FixedWindowRateLimiter"/>.</param>
@@ -36,9 +35,9 @@ public abstract partial class RateLimit
     /// <param name="retryAfterFactory">An (optional) factory to use to express retry-after back to the caller, when an operation is rate-limited.
     /// <remarks>If null, a <see cref="RateLimitRejectedException"/> with property <see cref="RateLimitRejectedException.RetryAfter"/> will be thrown to indicate rate-limiting.</remarks></param>
     /// <returns></returns>
-    public static RateLimitPolicy<TResult> FixedWindowRateLimit<TResult>(
+    public static AsyncRateLimitPolicy<TResult> FixedWindowRateLimitAsync<TResult>(
         FixedWindowRateLimiterOptions options,
-        Action<ReplenishingRateLimiter> limiterStateAction = null!,
+        Action<RateLimiter> limiterStateAction = null!,
         Func<RateLimitLease, Context, TResult> retryAfterFactory = null!)
     {
         ArgumentNullException.ThrowIfNull(options);
@@ -48,11 +47,11 @@ public abstract partial class RateLimit
             limiterStateAction(rateLimiter);
         }
 
-        return new RateLimitPolicy<TResult>(rateLimiter, retryAfterFactory);
+        return new AsyncRateLimitPolicy<TResult>(rateLimiter, retryAfterFactory);
     }
 
     /// <summary>
-    /// Build a RateLimit <see cref="Policy"/> that will rate-limit executions based on the <see cref="SlidingWindowRateLimiter" /> rate limiter.
+    /// Build a RateLimit <see cref="AsyncPolicy"/> that will rate-limit executions based on the <see cref="SlidingWindowRateLimiter" /> rate limiter.
     /// </summary>
     /// <typeparam name="TResult">The type of return values this policy will handle.</typeparam>
     /// <param name="configureOptions">A delegate that is used to configure an <see cref="SlidingWindowRateLimiterOptions"/>.</param>
@@ -60,20 +59,20 @@ public abstract partial class RateLimit
     /// <param name="retryAfterFactory">An (optional) factory to use to express retry-after back to the caller, when an operation is rate-limited.
     /// <remarks>If null, a <see cref="RateLimitRejectedException"/> with property <see cref="RateLimitRejectedException.RetryAfter"/> will be thrown to indicate rate-limiting.</remarks></param>
     /// <returns></returns>
-    public static RateLimitPolicy<TResult> SlidingWindowRateLimit<TResult>(
+    public static AsyncRateLimitPolicy<TResult> SlidingWindowRateLimitAsync<TResult>(
         Action<SlidingWindowRateLimiterOptions> configureOptions,
-        Action<ReplenishingRateLimiter> limiterStateAction = null!,
+        Action<RateLimiter> limiterStateAction = null!,
         Func<RateLimitLease, Context, TResult> retryAfterFactory = null!)
     {
         ArgumentNullException.ThrowIfNull(configureOptions);
         var options = new SlidingWindowRateLimiterOptions();
         configureOptions(options);
 
-        return SlidingWindowRateLimit<TResult>(options, limiterStateAction, retryAfterFactory);
+        return SlidingWindowRateLimitAsync<TResult>(options, limiterStateAction, retryAfterFactory);
     }
 
     /// <summary>
-    /// Build a RateLimit <see cref="Policy"/> that will rate-limit executions based on the <see cref="SlidingWindowRateLimiter" /> rate limiter.
+    /// Build a RateLimit <see cref="AsyncPolicy"/> that will rate-limit executions based on the <see cref="SlidingWindowRateLimiter" /> rate limiter.
     /// </summary>
     /// <typeparam name="TResult">The type of return values this policy will handle.</typeparam>
     /// <param name="options">Options to specify the behavior of the <see cref="SlidingWindowRateLimiter"/>.</param>
@@ -81,9 +80,9 @@ public abstract partial class RateLimit
     /// <param name="retryAfterFactory">An (optional) factory to use to express retry-after back to the caller, when an operation is rate-limited.
     /// <remarks>If null, a <see cref="RateLimitRejectedException"/> with property <see cref="RateLimitRejectedException.RetryAfter"/> will be thrown to indicate rate-limiting.</remarks></param>
     /// <returns></returns>
-    public static RateLimitPolicy<TResult> SlidingWindowRateLimit<TResult>(
+    public static AsyncRateLimitPolicy<TResult> SlidingWindowRateLimitAsync<TResult>(
         SlidingWindowRateLimiterOptions options,
-        Action<ReplenishingRateLimiter> limiterStateAction = null!,
+        Action<RateLimiter> limiterStateAction = null!,
         Func<RateLimitLease, Context, TResult> retryAfterFactory = null!)
     {
         ArgumentNullException.ThrowIfNull(options);
@@ -93,11 +92,11 @@ public abstract partial class RateLimit
             limiterStateAction(rateLimiter);
         }
 
-        return new RateLimitPolicy<TResult>(rateLimiter, retryAfterFactory);
+        return new AsyncRateLimitPolicy<TResult>(rateLimiter, retryAfterFactory);
     }
 
     /// <summary>
-    /// Build a RateLimit <see cref="Policy"/> that will rate-limit executions based on the <see cref="TokenBucketRateLimiter" /> rate limiter.
+    /// Build a RateLimit <see cref="AsyncPolicy"/> that will rate-limit executions based on the <see cref="TokenBucketRateLimiter" /> rate limiter.
     /// </summary>
     /// <typeparam name="TResult">The type of return values this policy will handle.</typeparam>
     /// <param name="configureOptions">A delegate that is used to configure an <see cref="TokenBucketRateLimiterOptions"/>.</param>
@@ -105,20 +104,20 @@ public abstract partial class RateLimit
     /// <param name="retryAfterFactory">An (optional) factory to use to express retry-after back to the caller, when an operation is rate-limited.
     /// <remarks>If null, a <see cref="RateLimitRejectedException"/> with property <see cref="RateLimitRejectedException.RetryAfter"/> will be thrown to indicate rate-limiting.</remarks></param>
     /// <returns></returns>
-    public static RateLimitPolicy<TResult> TokenBucketRateLimit<TResult>(
+    public static AsyncRateLimitPolicy<TResult> TokenBucketRateLimitAsync<TResult>(
         Action<TokenBucketRateLimiterOptions> configureOptions,
-        Action<ReplenishingRateLimiter> limiterStateAction = null!,
+        Action<RateLimiter> limiterStateAction = null!,
         Func<RateLimitLease, Context, TResult> retryAfterFactory = null!)
     {
         ArgumentNullException.ThrowIfNull(configureOptions);
         var options = new TokenBucketRateLimiterOptions();
         configureOptions(options);
 
-        return TokenBucketRateLimit<TResult>(options, limiterStateAction, retryAfterFactory);
+        return TokenBucketRateLimitAsync<TResult>(options, limiterStateAction, retryAfterFactory);
     }
 
     /// <summary>
-    /// Build a RateLimit <see cref="Policy"/> that will rate-limit executions based on the <see cref="TokenBucketRateLimiter" /> rate limiter.
+    /// Build a RateLimit <see cref="AsyncPolicy"/> that will rate-limit executions based on the <see cref="TokenBucketRateLimiter" /> rate limiter.
     /// </summary>
     /// <typeparam name="TResult">The type of return values this policy will handle.</typeparam>
     /// <param name="options">Options to specify the behavior of the <see cref="TokenBucketRateLimiter"/>.</param>
@@ -126,9 +125,9 @@ public abstract partial class RateLimit
     /// <param name="retryAfterFactory">An (optional) factory to use to express retry-after back to the caller, when an operation is rate-limited.
     /// <remarks>If null, a <see cref="RateLimitRejectedException"/> with property <see cref="RateLimitRejectedException.RetryAfter"/> will be thrown to indicate rate-limiting.</remarks></param>
     /// <returns></returns>
-    public static RateLimitPolicy<TResult> TokenBucketRateLimit<TResult>(
+    public static AsyncRateLimitPolicy<TResult> TokenBucketRateLimitAsync<TResult>(
         TokenBucketRateLimiterOptions options,
-        Action<ReplenishingRateLimiter> limiterStateAction = null!,
+        Action<RateLimiter> limiterStateAction = null!,
         Func<RateLimitLease, Context, TResult> retryAfterFactory = null!)
     {
         ArgumentNullException.ThrowIfNull(options);
@@ -138,11 +137,11 @@ public abstract partial class RateLimit
             limiterStateAction(rateLimiter);
         }
 
-        return new RateLimitPolicy<TResult>(rateLimiter, retryAfterFactory);
+        return new AsyncRateLimitPolicy<TResult>(rateLimiter, retryAfterFactory);
     }
 
     /// <summary>
-    /// Build a RateLimit <see cref="Policy"/> that will rate-limit executions based on the <see cref="ConcurrencyLimiter" /> rate limiter.
+    /// Build a RateLimit <see cref="AsyncPolicy"/> that will rate-limit executions based on the <see cref="ConcurrencyLimiter" /> rate limiter.
     /// </summary>
     /// <typeparam name="TResult">The type of return values this policy will handle.</typeparam>
     /// <param name="configureOptions">A delegate that is used to configure an <see cref="ConcurrencyLimiterOptions"/>.</param>
@@ -150,7 +149,7 @@ public abstract partial class RateLimit
     /// <param name="retryAfterFactory">An (optional) factory to use to express retry-after back to the caller, when an operation is rate-limited.
     /// <remarks>If null, a <see cref="RateLimitRejectedException"/> with property <see cref="RateLimitRejectedException.RetryAfter"/> will be thrown to indicate rate-limiting.</remarks></param>
     /// <returns></returns>
-    public static RateLimitPolicy<TResult> ConcurrencyRateLimit<TResult>(
+    public static AsyncRateLimitPolicy<TResult> ConcurrencyRateLimitAsync<TResult>(
         Action<ConcurrencyLimiterOptions> configureOptions,
         Action<RateLimiter> limiterStateAction = null!,
         Func<RateLimitLease, Context, TResult> retryAfterFactory = null!)
@@ -159,11 +158,11 @@ public abstract partial class RateLimit
         var options = new ConcurrencyLimiterOptions();
         configureOptions(options);
 
-        return ConcurrencyRateLimit<TResult>(options, limiterStateAction, retryAfterFactory);
+        return ConcurrencyRateLimitAsync<TResult>(options, limiterStateAction, retryAfterFactory);
     }
 
     /// <summary>
-    /// Build a RateLimit <see cref="Policy"/> that will rate-limit executions based on the <see cref="ConcurrencyLimiter" /> rate limiter.
+    /// Build a RateLimit <see cref="AsyncPolicy"/> that will rate-limit executions based on the <see cref="ConcurrencyLimiter" /> rate limiter.
     /// </summary>
     /// <typeparam name="TResult">The type of return values this policy will handle.</typeparam>
     /// <param name="options">Options to specify the behavior of the <see cref="ConcurrencyLimiter"/>.</param>
@@ -171,7 +170,7 @@ public abstract partial class RateLimit
     /// <param name="retryAfterFactory">An (optional) factory to use to express retry-after back to the caller, when an operation is rate-limited.
     /// <remarks>If null, a <see cref="RateLimitRejectedException"/> with property <see cref="RateLimitRejectedException.RetryAfter"/> will be thrown to indicate rate-limiting.</remarks></param>
     /// <returns></returns>
-    public static RateLimitPolicy<TResult> ConcurrencyRateLimit<TResult>(
+    public static AsyncRateLimitPolicy<TResult> ConcurrencyRateLimitAsync<TResult>(
         ConcurrencyLimiterOptions options,
         Action<RateLimiter> limiterStateAction = null!,
         Func<RateLimitLease, Context, TResult> retryAfterFactory = null!)
@@ -183,6 +182,6 @@ public abstract partial class RateLimit
             limiterStateAction(rateLimiter);
         }
 
-        return new RateLimitPolicy<TResult>(rateLimiter, retryAfterFactory);
+        return new AsyncRateLimitPolicy<TResult>(rateLimiter, retryAfterFactory);
     }
 }

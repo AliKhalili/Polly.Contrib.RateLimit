@@ -2,7 +2,7 @@ using System.Threading.RateLimiting;
 using Polly.RateLimit;
 using FluentAssertions;
 
-namespace Polly.Contrib.RateLimit.Tests;
+namespace Polly.Contrib.RateLimiting.Tests;
 
 public class FixedWindow_AsyncRateLimitSyntaxTest : AsyncRateLimitSyntaxBaseTest
 {
