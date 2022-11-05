@@ -2,7 +2,7 @@
 using Polly;
 using Polly.RateLimit;
 
-namespace Polly.Contrib.RateLimiting;
+namespace DotNet.Polly.Contrib.RateLimiting;
 
 public abstract partial class RateLimit
 {

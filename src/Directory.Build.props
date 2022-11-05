@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\Polly.Contrib.RateLimiting.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\DotNet.Polly.Contrib.RateLimiting.snk</AssemblyOriginatorKeyFile>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 </Project>

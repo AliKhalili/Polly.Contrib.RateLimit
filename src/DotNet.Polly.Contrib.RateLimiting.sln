@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polly.Contrib.RateLimiting", "Polly.Contrib.RateLimiting\Polly.Contrib.RateLimiting.csproj", "{98FB2A5F-282E-4764-A52B-FCFDDF7D1C44}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet.Polly.Contrib.RateLimiting", "DotNet.Polly.Contrib.RateLimiting\DotNet.Polly.Contrib.RateLimiting.csproj", "{98FB2A5F-282E-4764-A52B-FCFDDF7D1C44}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polly.Contrib.RateLimiting.Specs", "Polly.Contrib.RateLimiting.Specs\Polly.Contrib.RateLimiting.Specs.csproj", "{A71B2956-A853-4DB1-AB40-C06276A944DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet.Polly.Contrib.RateLimiting.Specs", "DotNet.Polly.Contrib.RateLimiting.Specs\DotNet.Polly.Contrib.RateLimiting.Specs.csproj", "{A71B2956-A853-4DB1-AB40-C06276A944DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

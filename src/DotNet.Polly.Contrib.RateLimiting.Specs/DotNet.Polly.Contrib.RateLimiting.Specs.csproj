@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Polly.Contrib.RateLimiting\Polly.Contrib.RateLimiting.csproj" />
+    <ProjectReference Include="..\DotNet.Polly.Contrib.RateLimiting\DotNet.Polly.Contrib.RateLimiting.csproj" />
   </ItemGroup>
 
 </Project>

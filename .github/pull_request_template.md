@@ -1,4 +1,4 @@
-<!-- Thank you for contributing to Polly.Contrib.RateLimiting!  Open source is only as strong as its contributors.  All non-trivial contributions get a public credit in the readme! -->
+<!-- Thank you for contributing to DotNet.Polly.Contrib.RateLimiting!  Open source is only as strong as its contributors.  All non-trivial contributions get a public credit in the readme! -->
 
 ### The issue or feature being addressed
 
