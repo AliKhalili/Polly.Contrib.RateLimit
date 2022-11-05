@@ -24,7 +24,7 @@ var configuration = Argument<string>("configuration", "Release");
 // GLOBAL VARIABLES
 ///////////////////////////////////////////////////////////////////////////////
 
-var projectName = "Polly.Contrib.RateLimit";
+var projectName = "Polly.Contrib.RateLimiting";
 
 var solutions = GetFiles("./**/*.sln");
 var solutionPaths = solutions.Select(solution => solution.GetDirectory());

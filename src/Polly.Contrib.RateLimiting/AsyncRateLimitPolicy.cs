@@ -3,7 +3,7 @@ using System.Threading.RateLimiting;
 using Polly;
 using Polly.RateLimit;
 
-namespace Polly.Contrib.RateLimit;
+namespace Polly.Contrib.RateLimiting;
 
 /// <summary>
 /// A rate-limit policy that can be applied to asynchronous delegates.
