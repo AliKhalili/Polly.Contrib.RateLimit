@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet.Polly.Contrib.RateLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNet.Polly.Contrib.RateLimiting.Specs", "DotNet.Polly.Contrib.RateLimiting.Specs\DotNet.Polly.Contrib.RateLimiting.Specs.csproj", "{A71B2956-A853-4DB1-AB40-C06276A944DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.Polly.Contrib.RateLimiting.Sample", "DotNet.Polly.Contrib.RateLimiting.Sample\DotNet.Polly.Contrib.RateLimiting.Sample.csproj", "{55E3A193-5065-4850-AD5F-7620475B710D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{A71B2956-A853-4DB1-AB40-C06276A944DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A71B2956-A853-4DB1-AB40-C06276A944DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A71B2956-A853-4DB1-AB40-C06276A944DF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55E3A193-5065-4850-AD5F-7620475B710D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55E3A193-5065-4850-AD5F-7620475B710D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55E3A193-5065-4850-AD5F-7620475B710D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55E3A193-5065-4850-AD5F-7620475B710D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
