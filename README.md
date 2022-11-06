@@ -13,7 +13,7 @@ This repository is a tiny wrapper around .NET 7 Rate Limiting package that enabl
 ## Installing via .NET CLI
 
 ```shell
-dotnet add package DotNet.Polly.Contrib.RateLimiting --prerelease
+dotnet add package DotNet7.Polly.RateLimit --version 1.0.0
 ```
 
 ## Defining Polly Policies
